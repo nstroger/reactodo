@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 
 import logo from './logo.svg';
 import './App.css';
@@ -17,7 +22,18 @@ class App extends Component {
             <img src={logo} className="App-logo" alt="logo" />
             <h2>Welcome to React</h2>
           </div>
-          <TodoApp />
+          <Router>
+            <div>
+              <ul>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/todos">TodoApp</Link></li>
+              </ul>
+              <Route exact path="/" component={() => (
+                <h3>Home Page</h3>
+              )} />
+              <Route path="/todos" component={TodoApp} />
+            </div>
+          </Router>
         </div>
       </Provider>
     );

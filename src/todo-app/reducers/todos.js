@@ -1,4 +1,6 @@
 export const todos = (state = [], action) => {
+  console.log(action);
+  console.log(state);
   switch(action.type) {
     case 'ADD_TODO':
       return [
