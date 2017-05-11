@@ -14,6 +14,11 @@ export const toggleTodoRedux = (id) => ({
   id
 })
 
+export const deleteTodoRedux = (id) => ({
+  type: 'DELETE_TODO',
+  id
+})
+
 export const resetTodos = () => ({
   type: 'RESET_TODOS'
 })
@@ -53,6 +58,17 @@ export const toggleTodo = (id) => dispatch => {
     .then(res => res.json())
     .then(
       todo => dispatch(toggleTodoRedux(id)),
+      err => console.log(err)
+    )
+}
+
+export const deleteTodo = (id) => dispatch => {
+  fetch(`${API_URL}/${id}`, {
+      method: 'DELETE'
+    })
+    .then(res => res.json())
+    .then(
+      todo => dispatch(deleteTodoRedux(id)),
       err => console.log(err)
     )
 }
