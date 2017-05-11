@@ -2,22 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import { toggleTodo } from './actions';
+import { toggleTodo, fetchTodos } from './actions';
 
-const getVisibleTodos = (
-  todos,
-  filter
-) => {
-  console.log(filter);
-  switch (filter) {
-    case 'all':
-      return todos;
+const getVisibleTodos = (todos, filter) => {
+  switch(filter) {
     case 'active':
-      return todos.filter(todo => !todo.completed);
+      return todos.filter(todo => !todo.completed)
     case 'completed':
-      return todos.filter(todo => todo.completed);
+      return todos.filter(todo => todo.completed)
     default:
-      return todos;
+      return todos
   }
 }
 
@@ -39,40 +33,53 @@ const Todo = ({
   </li>
 )
 
-const TodoList = ({
-  todos,
-  onTodoClick
-}) => (
-  <ul>
-    {todos.map(todo =>
-      <Todo
-        key={todo.id}
-        {...todo}
-        style={{
-          color: 'black'
-        }}
-        onClick={() => onTodoClick(todo.id)}
-      />
-    )}
-  </ul>
-)
-
-const mapStateToProps = (state, { match }) => ({
-  todos: getVisibleTodos(
-    state.todos,
-    match.params.filter
-  )
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  onTodoClick: (id) => {
-    dispatch(toggleTodo(id));
+class TodoList extends React.Component {
+  componentDidMount () {
+    this.routeChanged()
   }
+
+  componentDidUpdate (prevProps) {
+    let { location: { pathname } } = this.props
+
+    if (prevProps.location.pathname === pathname) return
+    this.routeChanged()
+  }
+
+  routeChanged () {
+    this.props.getTodoList();
+  }
+
+  render() {
+    let { todos, onTodoClick } = this.props;
+    return (
+      <ul>
+        {todos.map(todo =>
+          <Todo
+            key={todo.id}
+            {...todo}
+            style={{
+              color: 'black'
+            }}
+            onClick={() => onTodoClick(todo.id)}
+          />
+        )}
+      </ul>
+    );
+  }
+}
+
+const mapStateToProps = (state, ownProps) => ({
+  todos: getVisibleTodos(state.todos, ownProps.match.params.filter)
 })
 
-const TodoListContainer = withRouter(connect(
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onTodoClick: (id) => dispatch(toggleTodo(id)),
+  getTodoList: () => dispatch(fetchTodos(ownProps.match.params.filter))
+})
+
+const TodoListContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TodoList))
+)(TodoList)
 
-export default TodoListContainer
+export default withRouter(TodoListContainer)

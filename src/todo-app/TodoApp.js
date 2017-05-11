@@ -5,7 +5,7 @@ import AddTodo from './AddTodo';
 import TodoList from './TodoList';
 import Footer from './Footer';
 
-export const TodoApp = ({ match }) => (
+const TodoApp = ({ match }) => (
   <div>
     <h1>Todo App</h1>
     <AddTodo />
@@ -14,3 +14,5 @@ export const TodoApp = ({ match }) => (
     <Footer />
   </div>
 )
+
+export default TodoApp

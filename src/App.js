@@ -8,7 +8,7 @@ import {
 
 import logo from './logo.svg';
 import './App.css';
-import { TodoApp } from './todo-app/TodoApp';
+import TodoApp from './todo-app/TodoApp';
 import configureStore from './configureStore';
 
 const store = configureStore();

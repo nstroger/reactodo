@@ -8,7 +8,7 @@ export const todos = (state = [], action) => {
         {
           id: action.id,
           text: action.text,
-          completed: false
+          completed: action.completed
         }
       ];
     case 'TOGGLE_TODO':
@@ -21,6 +21,8 @@ export const todos = (state = [], action) => {
           completed: !todo.completed
         }
       });
+    case 'RESET_TODOS':
+      return [];
     default:
       return state;
   }
